@@ -112,6 +112,27 @@
             <h3>Invasiveness Check:</h3>
             <p id="invasiveStatus"></p>
         </div>
+        <hr>
+        <form id="entryForm">
+            <h2>Add New Species Entry</h2>
+            <div class="form-group">
+                <label for="new_species_name">Species Name:</label>
+                <input type="text" id="new_species_name" name="species_name" required>
+            </div>
+            <div class="form-group">
+                <label for="scientific_name">Scientific Name:</label>
+                <input type="text" id="scientific_name" name="scientific_name" required>
+            </div>
+            <div class="form-group">
+                <label for="entry_location">Location:</label>
+                <input type="text" id="entry_location" name="location" required>
+            </div>
+            <button type="submit">Add Entry</button>
+        </form>
+        <div class="result" id="entryResult" style="display:none;">
+            <h3>Entry Status:</h3>
+            <p id="entryStatus"></p>
+        </div>
     </div>
     <script>
         document.getElementById('locationForm').onsubmit = function(event) {
@@ -141,21 +162,4 @@
             event.preventDefault();
             const speciesName = document.getElementById('species_name_invasive').value;
             const location = document.getElementById('location').value;
-            fetch('/invasive', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({
-                    'species_name': speciesName,
-                    'location': location
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const status = data.is_invasive ? 'Yes, this species is invasive in the specified location.' : 'No, this species is not invasive in the specified location.';
-                document.getElementById('invasiveStatus').textContent = status;
-                document.getElementById('invasiveResult').style.display = 'block';
-            });
-        };
-    </script>
-</body>
-</html>
+

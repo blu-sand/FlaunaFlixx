@@ -109,6 +109,4 @@ def add_entry():
     return jsonify({'message': 'Entry added successfully'})
 
 if __name__ == '__main__':
-    public_url = ngrok.connect(port=5000)
-    print(" * Running on", public_url)
     app.run(debug=True)

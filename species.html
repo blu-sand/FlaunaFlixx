@@ -83,7 +83,7 @@
 </head>
 <body>
     <div class="container">
-       
+      
         <h1>Flaunaflixx</h1>
         <form id="locationForm">
             <div class="form-group">
@@ -162,4 +162,38 @@
             event.preventDefault();
             const speciesName = document.getElementById('species_name_invasive').value;
             const location = document.getElementById('location').value;
-
+            fetch('/invasive', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    'species_name': speciesName,
+                    'location': location
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const status = data.is_invasive ? 'Yes, this species is invasive in the specified location.' : 'No, this species is not invasive in the specified location.';
+                document.getElementById('invasiveStatus').textContent = status;
+                document.getElementById('invasiveResult').style.display = 'block';
+            });
+        };
+        document.getElementById('dataEntryForm').onsubmit = function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/save_record', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Display success message to user
+                this.reset(); // Reset the form fields
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        };
+    </script>
+</body>
+</html>

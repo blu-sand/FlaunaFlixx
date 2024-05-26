@@ -45,6 +45,7 @@ def is_invasive(species_name, location):
 
 import joblib
 from flask import Flask, request, jsonify, render_template
+from pyngrok import ngrok
 
 
 app = Flask(__name__)
@@ -85,5 +86,29 @@ def invasive_check():
     result = is_invasive(species_name, location)
     return jsonify({'is_invasive': result})
 
+@app.route('/add_entry', methods=['POST'])
+def add_entry():
+    species_name = request.form['species_name']
+    scientific_name = request.form['scientific_name']
+    location = request.form['location']
+    
+    # Add new entry to DataFrame
+    new_entry = pd.DataFrame({
+        'SpeciesName': [species_name],
+        'ScientificName': [scientific_name],
+        'Location': [location]
+    })
+    
+    # Append to CSV file
+    file_path = "/Users/bstar/Desktop/Biodata/flask_app/data.csv"
+    if os.path.isfile(file_path):
+        new_entry.to_csv(file_path, mode='a', header=False, index=False)
+    else:
+        new_entry.to_csv(file_path, mode='w', header=True, index=False)
+    
+    return jsonify({'message': 'Entry added successfully'})
+
 if __name__ == '__main__':
+    public_url = ngrok.connect(port=5000)
+    print(" * Running on", public_url)
     app.run(debug=True)

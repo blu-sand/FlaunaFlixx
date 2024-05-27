@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: url('https://www.example.com/background.jpg'); /* Replace with a relevant background image URL */
             background-size: cover;
             background-position: center;
         }
@@ -177,10 +177,10 @@
                 document.getElementById('invasiveResult').style.display = 'block';
             });
         };
-        document.getElementById('dataEntryForm').onsubmit = function(event) {
+        document.getElementById('entryForm').onsubmit = function(event) {
             event.preventDefault();
             const formData = new FormData(this);
-            fetch('/save_record', {
+            fetch('/add_entry', {
                 method: 'POST',
                 body: formData
             })

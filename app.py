@@ -6,6 +6,8 @@ import pickle
 import warnings
 warnings.filterwarnings('ignore')
 
+user_entries_file_path = "/Users/bstar/Desktop/Biodata/flask_app/user_entries.csv"
+
 raw = pd.read_csv("/Users/bstar/Desktop/Biodata/flask_app/data.csv")
 
 invasive = pd.read_csv("/Users/bstar/Desktop/Biodata/flask_app/invasive.csv")
@@ -99,12 +101,11 @@ def add_entry():
         'Location': [location]
     })
     
+   
+    
     # Append to CSV file
-    file_path = "/Users/bstar/Desktop/Biodata/flask_app/data.csv"
-    if os.path.isfile(file_path):
-        new_entry.to_csv(file_path, mode='a', header=False, index=False)
-    else:
-        new_entry.to_csv(file_path, mode='w', header=True, index=False)
+    with open(user_entries_file_path, 'a') as f:
+        new_entry.to_csv(f, header=f.tell()==0, index=False)
     
     return jsonify({'message': 'Entry added successfully'})
 
